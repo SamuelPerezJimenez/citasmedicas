@@ -25,6 +25,9 @@ class WebService {
     response = await dio.get('especialidad/', queryParameters: {'id': 12});
 
     var result = SpecialtiesResponse.fromJson(response.data);
+    result.especialidad.add(Especialidad(cod: 0, descripcion: 'Todas'));
+
+    result.especialidad.sort(((a, b) => a.cod.compareTo(b.cod)));
 
     return result.especialidad;
   }

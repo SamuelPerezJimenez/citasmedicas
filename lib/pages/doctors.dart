@@ -17,7 +17,7 @@ class Doctors extends StatefulWidget {
 
 class _DoctorsState extends State<Doctors> {
   String query = '';
-  var speciality;
+  dynamic speciality = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +122,7 @@ class _DoctorsState extends State<Doctors> {
           ),
           FutureBuilder(
             future: WebService()
-                .getDoctors(idDoctor: query, speciality: speciality),
+                .getDoctors(idDoctor: query, speciality: speciality ?? 0),
             builder:
                 (BuildContext context, AsyncSnapshot<List<Doctor>> snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
