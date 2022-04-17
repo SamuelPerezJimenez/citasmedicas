@@ -3,6 +3,7 @@ import 'package:citas_medicas_app/models/specialities.dart';
 import 'package:dio/dio.dart';
 
 import '../models/doctors.dart';
+import '../models/patients.dart';
 
 class WebService {
   var dio = Dio(BaseOptions(baseUrl: 'http://localhost:5001/api/dev/'));
@@ -30,5 +31,17 @@ class WebService {
     result.especialidad.sort(((a, b) => a.cod.compareTo(b.cod)));
 
     return result.especialidad;
+  }
+
+  Future<List<Paciente>> getPatients(
+      {String idPaciente = '', int idArs = 0}) async {
+    Response response;
+
+    response = await dio
+        .get('pacientes/', queryParameters: {'id': idPaciente, 'idars': idArs});
+
+    var result = PatientsResponse.fromJson(response.data);
+
+    return result.paciente;
   }
 }

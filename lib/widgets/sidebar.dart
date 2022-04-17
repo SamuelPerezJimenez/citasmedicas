@@ -41,7 +41,9 @@ class SideBar extends StatelessWidget {
           MenuItem(
               text: 'Pacientes',
               icon: Icons.show_chart_outlined,
-              onPressed: () {}),
+              isActive:
+                  sideMenuProvider.currentPage == Flurorouter.patientsRoute,
+              onPressed: () => navigateTo(Flurorouter.patientsRoute)),
           MenuItem(
             text: 'Doctores',
             icon: Icons.layers_outlined,

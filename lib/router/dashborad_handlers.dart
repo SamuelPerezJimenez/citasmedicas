@@ -1,5 +1,6 @@
 import 'package:citas_medicas_app/pages/dashboard.dart';
 import 'package:citas_medicas_app/pages/doctors.dart';
+import 'package:citas_medicas_app/pages/patients.dart';
 import 'package:citas_medicas_app/router/router.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -27,5 +28,11 @@ class DashboardHandlers {
     Provider.of<SideMenuProvider>(context!, listen: false)
         .setCurrentPageUrl(Flurorouter.doctorsRoute);
     return const Dashboard(child: Doctors());
+  });
+
+  static Handler patients = Handler(handlerFunc: (context, params) {
+    Provider.of<SideMenuProvider>(context!, listen: false)
+        .setCurrentPageUrl(Flurorouter.patientsRoute);
+    return const Dashboard(child: Patients());
   });
 }
