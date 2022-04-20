@@ -1,6 +1,8 @@
+import 'package:citas_medicas_app/pages/appointment.dart';
 import 'package:citas_medicas_app/pages/dashboard.dart';
 import 'package:citas_medicas_app/pages/doctors.dart';
 import 'package:citas_medicas_app/pages/patients.dart';
+import 'package:citas_medicas_app/pages/principal.dart';
 import 'package:citas_medicas_app/router/router.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +12,8 @@ import '../providers/sidemenu_provider.dart';
 
 class DashboardHandlers {
   static Handler dashboard = Handler(handlerFunc: (context, params) {
-    return const Dashboard(
-      child: Text('data'),
+    return Dashboard(
+      child: Principal(),
     );
 
     // final authProvider = Provider.of<AuthProvider>(context!);
@@ -34,5 +36,11 @@ class DashboardHandlers {
     Provider.of<SideMenuProvider>(context!, listen: false)
         .setCurrentPageUrl(Flurorouter.patientsRoute);
     return const Dashboard(child: Patients());
+  });
+
+  static Handler appointment = Handler(handlerFunc: (context, params) {
+    Provider.of<SideMenuProvider>(context!, listen: false)
+        .setCurrentPageUrl(Flurorouter.appointmentRoute);
+    return const Dashboard(child: Appointment());
   });
 }

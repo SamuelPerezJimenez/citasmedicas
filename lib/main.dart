@@ -1,4 +1,5 @@
 import 'package:citas_medicas_app/pages/dashboard.dart';
+import 'package:citas_medicas_app/pages/principal.dart';
 import 'package:citas_medicas_app/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       onGenerateRoute: Flurorouter.router.generator,
       navigatorKey: NavigationService.navigatorKey,
-      home: const Dashboard(child: Text('data')),
+      home: Dashboard(child: Principal()),
     );
   }
 }

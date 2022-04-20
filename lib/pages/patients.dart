@@ -32,7 +32,7 @@ class _PatientsState extends State<Patients> {
         title: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            'Pacinetes',
+            'Pacientes',
             style: GoogleFonts.roboto(color: Colors.black, fontSize: 34),
           ),
         ),
@@ -113,7 +113,7 @@ class _PatientsState extends State<Patients> {
                       await WebService()
                           .getPatients(idPaciente: query, idArs: speciality);
                     },
-                    text: 'Nuevo Doctor',
+                    text: 'Nuevo Paciente',
                     isFilled: true,
                     isTextWhite: true,
                     color: const Color(0xff0D68A8),

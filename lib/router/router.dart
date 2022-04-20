@@ -18,6 +18,7 @@ class Flurorouter {
   static String blankRoute = '/dashboard/blank';
   static String doctorsRoute = '/dashboard/doctors';
   static String patientsRoute = '/dashboard/patients';
+  static String appointmentRoute = '/dashboard/appointments';
 
   static String usersRoute = '/dashboard/users';
   static String userRoute = '/dashboard/users/:uid';
@@ -29,8 +30,17 @@ class Flurorouter {
     // router.define( registerRoute, handler: AdminHandlers.register, transitionType: TransitionType.none );
 
     // // Dashboard
+
+    router.define(dashboardRoute,
+        handler: DashboardHandlers.dashboard,
+        transitionType: TransitionType.fadeIn);
+
     router.define(doctorsRoute,
         handler: DashboardHandlers.doctors,
+        transitionType: TransitionType.fadeIn);
+
+    router.define(appointmentRoute,
+        handler: DashboardHandlers.appointment,
         transitionType: TransitionType.fadeIn);
 
     router.define(patientsRoute,

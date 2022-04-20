@@ -37,7 +37,12 @@ class SideBar extends StatelessWidget {
             isActive:
                 sideMenuProvider.currentPage == Flurorouter.dashboardRoute,
           ),
-          MenuItem(text: 'Citas', icon: Icons.calendar_month, onPressed: () {}),
+          MenuItem(
+              text: 'Citas',
+              icon: Icons.calendar_month,
+              onPressed: () => navigateTo(Flurorouter.appointmentRoute),
+              isActive:
+                  sideMenuProvider.currentPage == Flurorouter.dashboardRoute),
           MenuItem(
               text: 'Pacientes',
               icon: Icons.show_chart_outlined,
