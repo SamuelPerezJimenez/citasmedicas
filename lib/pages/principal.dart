@@ -1,12 +1,16 @@
 import 'package:citas_medicas_app/widgets/incomingAppointments.dart';
 import 'package:citas_medicas_app/widgets/patientIncomingHistory.dart';
+import 'package:date_utils/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../providers/web_service.dart';
+import '../utils.dart';
 import '../widgets/appointments_per_day.dart';
 import '../widgets/buttons/custom_outlined_button.dart';
 import '../widgets/main_stats.dart';
 import '../widgets/appoinment_dialog.dart';
+import 'package:date_utils/date_utils.dart' as dateutil;
 
 class Principal extends StatefulWidget {
   Principal({Key? key}) : super(key: key);
@@ -78,9 +82,10 @@ class _PrincipalState extends State<Principal> {
       ),
       floatingActionButton: CustomOutlinedButton(
         onPressed: () async {
-          await AppointmentDialog().showAppoinmentDialog(context);
-          // await WebService()
-          //     .getPatients(idPaciente: query, idArs: speciality);
+          // await AppointmentDialog().showAppoinmentDialog(context);
+          var result = await WebService().getDisponibilidad(id: '2');
+
+          var r = Utils().getJustAvailables(result);
         },
         text: 'Nueva Cita',
         isFilled: true,

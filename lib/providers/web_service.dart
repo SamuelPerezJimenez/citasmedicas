@@ -1,6 +1,7 @@
-import 'package:citas_medicas_app/models/appointment_model.dart';
+import 'package:citas_medicas_app/models/appointment_model.dart' as cita;
 import 'package:citas_medicas_app/models/appointment_status_model.dart';
 import 'package:citas_medicas_app/models/appointment_type_model.dart';
+import 'package:citas_medicas_app/models/disponibilidad_model.dart';
 import 'package:citas_medicas_app/models/doctors.dart' as doctorModel;
 import 'package:citas_medicas_app/models/specialities.dart';
 import 'package:dio/dio.dart';
@@ -12,7 +13,7 @@ class WebService {
   var dio = Dio(BaseOptions(baseUrl: 'http://localhost:5001/api/dev/'));
 
   Future<List<doctorModel.Doctor>> getDoctors(
-      {String idDoctor = '', int speciality = 0}) async {
+      {String idDoctor = '', String name = '', int speciality = 0}) async {
     Response response;
 
     response = await dio.get('doctores/',
@@ -23,7 +24,7 @@ class WebService {
     return result.doctor;
   }
 
-  Future<List<Cita>> getAppointments(
+  Future<List<cita.Cita>> getAppointments(
       {String idAppointment = '',
       int idAppointmentType = 0,
       int idAppointmentStatus = 0,
@@ -37,18 +38,20 @@ class WebService {
       'fecha': date
     });
 
-    var result = AppointmentResponse.fromJson(response.data);
+    var result = cita.AppointmentResponse.fromJson(response.data);
 
     return result.citas;
   }
 
-  Future<List<Especialidad>> getSpecialities() async {
+  Future<List<Especialidad>> getSpecialities({bool allValue = true}) async {
     Response response;
 
     response = await dio.get('especialidad/', queryParameters: {'id': 12});
 
     var result = SpecialtiesResponse.fromJson(response.data);
-    result.especialidad.add(Especialidad(cod: 0, descripcion: 'Todas'));
+    if (allValue) {
+      result.especialidad.add(Especialidad(cod: 0, descripcion: 'Todas'));
+    }
 
     result.especialidad.sort(((a, b) => a.cod.compareTo(b.cod)));
 
@@ -92,5 +95,15 @@ class WebService {
     result.estadoCita.sort(((a, b) => a.cod.compareTo(b.cod)));
 
     return result.estadoCita;
+  }
+
+  Future<DisponibilidadResponse> getDisponibilidad({String id = ''}) async {
+    Response response;
+
+    response = await dio.get('disponibles/', queryParameters: {'id': id});
+
+    var result = DisponibilidadResponse.fromJson(response.data);
+
+    return result;
   }
 }

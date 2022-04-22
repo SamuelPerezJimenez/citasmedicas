@@ -6,6 +6,7 @@ class CustomOutlinedButton extends StatelessWidget {
   final Color color;
   final bool isFilled;
   final bool isTextWhite;
+  final bool short;
 
   const CustomOutlinedButton(
       {Key? key,
@@ -13,7 +14,8 @@ class CustomOutlinedButton extends StatelessWidget {
       required this.text,
       this.color = Colors.blue,
       this.isFilled = false,
-      this.isTextWhite = false})
+      this.isTextWhite = false,
+      this.short = false})
       : super(key: key);
 
   @override
@@ -29,9 +31,12 @@ class CustomOutlinedButton extends StatelessWidget {
         ),
         onPressed: () => onPressed(),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+          padding: short
+              ? EdgeInsets.symmetric(horizontal: 6, vertical: 6)
+              : EdgeInsets.symmetric(horizontal: 20, vertical: 14),
           child: Text(
             text,
+            textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 16, color: isTextWhite ? Colors.white : color),
           ),
