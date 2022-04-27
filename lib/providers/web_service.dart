@@ -1,13 +1,17 @@
 import 'package:citas_medicas_app/models/appointment_model.dart' as cita;
 import 'package:citas_medicas_app/models/appointment_status_model.dart';
 import 'package:citas_medicas_app/models/appointment_type_model.dart';
+import 'package:citas_medicas_app/models/ars.dart';
 import 'package:citas_medicas_app/models/disponibilidad_model.dart';
 import 'package:citas_medicas_app/models/doctors.dart' as doctorModel;
 import 'package:citas_medicas_app/models/specialities.dart';
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 
 import '../models/doctors.dart';
 import '../models/patients.dart';
+
+final DateFormat formatGlobal = DateFormat('yyyy-MM-dd HH:mm');
 
 class WebService {
   var dio = Dio(BaseOptions(baseUrl: 'http://localhost:5001/api/dev/'));
@@ -83,6 +87,54 @@ class WebService {
     return result.tipoCita;
   }
 
+  Future<String> saveAppointment(
+      {fecha,
+      montoConsulta,
+      nota,
+      fechaCreacion,
+      codPaciente,
+      codDoctor,
+      codTipoCita,
+      codEstado}) async {
+    Response response;
+
+    response = await dio.get('citasIngresar/', queryParameters: {
+      'fecha': formatGlobal.format(fecha),
+      'monto_consulta': 1500,
+      'nota': 'NOTA',
+      'fecha_creacion': formatGlobal.format(DateTime.now()),
+      'cod_paciente': codPaciente,
+      'cod_doctor': codDoctor,
+      'cod_tipo_cita': codTipoCita,
+      'cod_estado': codEstado
+    });
+
+    return 'OK';
+  }
+
+  Future<String> savePatient(
+      {codPersona,
+      nombre,
+      apellido,
+      correo,
+      id_ars,
+      num_afiliado,
+      telefono}) async {
+    Response response;
+
+    response = await dio.get('pacientesIngresar/', queryParameters: {
+      'cod_persona': codPersona,
+      'nombre': nombre,
+      'apellido': apellido,
+      'correo': correo,
+      'id_ars': id_ars,
+      'num_afiliado': num_afiliado,
+      'telefono': telefono,
+    });
+
+    return 'OK';
+  }
+
   Future<List<EstadoCita>> getAppointmentStatus({String id = ''}) async {
     Response response;
 
@@ -97,13 +149,26 @@ class WebService {
     return result.estadoCita;
   }
 
-  Future<DisponibilidadResponse> getDisponibilidad({String id = ''}) async {
+  Future<DisponibilidadResponse> getDisponibilidad(
+      {String id = '', String name = ''}) async {
     Response response;
 
-    response = await dio.get('disponibles/', queryParameters: {'id': id});
+    response = await dio
+        .get('disponibles/', queryParameters: {'id': id, 'nombre': name});
 
     var result = DisponibilidadResponse.fromJson(response.data);
 
     return result;
+  }
+
+  Future<List<Ar>> getArs({String id = '', String name = ''}) async {
+    Response response;
+
+    response =
+        await dio.get('ars/', queryParameters: {'id': id, 'nombre': name});
+
+    var result = ArsResponse.fromJson(response.data);
+
+    return result.ars;
   }
 }

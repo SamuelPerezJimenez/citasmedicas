@@ -4,7 +4,8 @@
 
 import 'dart:convert';
 
-import 'package:date_utils/date_utils.dart';
+import 'package:date_utils/date_utils.dart' as dateUtils;
+import 'package:flutter/material.dart';
 
 DisponibilidadResponse disponibilidadResponseFromJson(String str) =>
     DisponibilidadResponse.fromJson(json.decode(str));
@@ -67,6 +68,9 @@ class Disponibilidade {
       required this.dia,
       required this.duracioCita,
       required this.idDoctor,
+      required this.nombre,
+      required this.apellido,
+      required this.especialidad,
       this.horas,
       this.disponibilidades});
 
@@ -76,31 +80,36 @@ class Disponibilidade {
   final String dia;
   final int duracioCita;
   final int idDoctor;
+  final String nombre;
+  final String apellido;
+  final String especialidad;
   final List<DateTime>? horas;
   final Map<DateTime, List<DateTime>>? disponibilidades;
 
   factory Disponibilidade.fromJson(Map<String, dynamic> json) {
     //Crear lista de fechas con diferencia de 30 minutos entre fecha inicio y fecha fin
     Map<DateTime, List<DateTime>> tempDisponibilidades = {};
-    ;
-    var horaFin = DateTime.parse('1974-03-20 ${json["hora_fin"]}');
-    var horaInicio = DateTime.parse('1974-03-20 ${json["hora_inicio"]}');
-    List<DateTime> listaHoras = [];
-    for (var i = horaInicio;
-        i.hour <= horaFin.hour &&
-            ((i.hour == horaFin.hour) ? i.minute <= horaFin.minute : true);
-        i = i.add(
-            Duration(minutes: ((json["duracio_cita"] / 60).floor() ?? 30)))) {
-      listaHoras.add(i);
-    }
 
     List<DateTime> listaDiasMes = [];
     var month = DateTime.now();
-    var days = DateUtils.daysInMonth(month);
+    var days = dateUtils.DateUtils.daysInMonth(month);
+
     days.removeWhere((d) =>
         (d.month != month.month || json["dia"] != d.weekday.toString()) ||
         (d.isBefore(month)));
     for (var element in days) {
+      var horaFin = DateTime.parse(
+          '${element.toString().split(' ')[0]} ${json["hora_fin"]}');
+      var horaInicio = DateTime.parse(
+          '${element.toString().split(' ')[0]} ${json["hora_inicio"]}');
+      List<DateTime> listaHoras = [];
+      for (var i = horaInicio;
+          i.hour <= horaFin.hour &&
+              ((i.hour == horaFin.hour) ? i.minute <= horaFin.minute : true);
+          i = i.add(
+              Duration(minutes: ((json["duracio_cita"] / 60).floor() ?? 30)))) {
+        listaHoras.add(i);
+      }
       tempDisponibilidades[element] = listaHoras;
     }
 
@@ -111,6 +120,9 @@ class Disponibilidade {
         dia: json["dia"],
         duracioCita: json["duracio_cita"],
         idDoctor: json["idDoctor"],
+        nombre: json["nombre"],
+        apellido: json["apellido"],
+        especialidad: json["especialidad"],
         disponibilidades: tempDisponibilidades);
   }
 

@@ -82,10 +82,11 @@ class _PrincipalState extends State<Principal> {
       ),
       floatingActionButton: CustomOutlinedButton(
         onPressed: () async {
-          // await AppointmentDialog().showAppoinmentDialog(context);
-          var result = await WebService().getDisponibilidad(id: '2');
+          // var result = await WebService().getDisponibilidad(id: '2');
 
-          var r = Utils().getJustAvailables(result);
+          // var r = Utils().getJustAvailables(result);
+
+          await AppointmentDialog().showAppoinmentDialog(context);
         },
         text: 'Nueva Cita',
         isFilled: true,

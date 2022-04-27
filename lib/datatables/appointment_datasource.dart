@@ -15,12 +15,17 @@ class AppointmentsDataSource extends DataTableSource {
       DataCell(Text(appointment.telefono)),
       DataCell(Text(appointment.cedula.toString())),
       DataCell(Text(appointment.fecha.toString())),
+      DataCell(
+          Text(appointment.nombreDoctor + ' ' + appointment.apellidoDoctor)),
       DataCell(Container(
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 16),
         decoration: BoxDecoration(
             color: const Color(0xffDFFFEC),
             borderRadius: BorderRadius.circular(10)),
-        child: Text(appointment.estado),
+        child: Text(
+          appointment.estado,
+          style: TextStyle(fontSize: 12),
+        ),
       )),
       DataCell(Center(
           child: Container(
@@ -28,7 +33,11 @@ class AppointmentsDataSource extends DataTableSource {
         decoration: BoxDecoration(
             color: const Color(0xffC1E6FF),
             borderRadius: BorderRadius.circular(10)),
-        child: Text(appointment.tipoConsulta),
+        child: Flexible(
+            child: Text(
+          appointment.tipoConsulta,
+          style: TextStyle(fontSize: 12),
+        )),
       ))),
       DataCell(IconButton(
           icon: const Icon(Icons.edit_outlined),

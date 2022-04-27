@@ -6,14 +6,14 @@ import 'no_page_found_handlers.dart';
 class Flurorouter {
   static final FluroRouter router = new FluroRouter();
 
-  static String rootRoute = '/';
+  static String rootRoute = '/dashboard/principal';
 
   // Auth Router
   static String loginRoute = '/auth/login';
   static String registerRoute = '/auth/register';
 
   // Dashboard
-  static String dashboardRoute = '/dashboard';
+  static String dashboardRoute = '/dashboard/principal';
   static String iconsRoute = '/dashboard/icons';
   static String blankRoute = '/dashboard/blank';
   static String doctorsRoute = '/dashboard/doctors';

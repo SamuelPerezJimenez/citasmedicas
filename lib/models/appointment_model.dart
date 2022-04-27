@@ -32,23 +32,34 @@ class AppointmentResponse {
 }
 
 class Cita {
-  Cita({
-    required this.nombre,
-    required this.apellido,
-    required this.telefono,
-    required this.cedula,
-    required this.fecha,
-    required this.estado,
-    required this.tipoConsulta,
-  });
+  Cita(
+      {required this.nombre,
+      required this.apellido,
+      required this.telefono,
+      required this.cedula,
+      required this.fecha,
+      required this.estado,
+      required this.tipoConsulta,
+      required this.apellidoDoctor,
+      required this.nombreDoctor,
+      this.codPaciente = 0,
+      this.codDoctor = '',
+      this.codEstado = 0,
+      this.codTipoCita = 0});
 
   final String nombre;
   final String apellido;
   final String telefono;
   final int cedula;
-  final DateTime fecha;
+  DateTime fecha;
   final String estado;
   final String tipoConsulta;
+  final String nombreDoctor;
+  final String apellidoDoctor;
+  final int codPaciente;
+  String codDoctor;
+  int codTipoCita;
+  int codEstado;
 
   factory Cita.fromJson(Map<String, dynamic> json) => Cita(
         nombre: json["nombre"],
@@ -58,6 +69,8 @@ class Cita {
         fecha: DateTime.parse(json["fecha"]),
         estado: json["estado"],
         tipoConsulta: json["tipoConsulta"],
+        nombreDoctor: json["nombreDoctor"],
+        apellidoDoctor: json["apellidoDoctor"],
       );
 
   Map<String, dynamic> toJson() => {

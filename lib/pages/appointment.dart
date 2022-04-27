@@ -200,6 +200,7 @@ class _AppointmentState extends State<Appointment> {
                               // usersProvider.sort<String>((user) => user.correo);
                             }),
                         const DataColumn(label: Text('Fecha')),
+                        const DataColumn(label: Text('Doctor')),
                         const DataColumn(label: Text('Estado')),
                         const DataColumn(
                             label: Text(

@@ -33,15 +33,15 @@ class PatientsResponse {
 }
 
 class Paciente {
-  Paciente({
-    required this.nombre,
-    required this.apellido,
-    required this.telefono,
-    required this.codPersona,
-    required this.descripcion,
-    required this.totalCitas,
-    required this.ultimaCita,
-  });
+  Paciente(
+      {required this.nombre,
+      required this.apellido,
+      required this.telefono,
+      required this.codPersona,
+      required this.descripcion,
+      required this.totalCitas,
+      this.ultimaCita,
+      required this.codPaciente});
 
   final String nombre;
   final String apellido;
@@ -49,17 +49,18 @@ class Paciente {
   final int codPersona;
   final String descripcion;
   final int totalCitas;
-  final DateTime ultimaCita;
+  final DateTime? ultimaCita;
+  final int codPaciente;
 
   factory Paciente.fromJson(Map<String, dynamic> json) => Paciente(
-        nombre: json["nombre"],
-        apellido: json["apellido"],
-        telefono: json["telefono"],
-        codPersona: json["cod_persona"],
-        descripcion: json["descripcion"],
-        totalCitas: json["totalCitas"],
-        ultimaCita: DateTime.parse(json["ultimaCita"]),
-      );
+      nombre: json["nombre"],
+      apellido: json["apellido"],
+      telefono: json["telefono"],
+      codPersona: json["cod_persona"],
+      descripcion: json["descripcion"],
+      totalCitas: json["totalCitas"],
+      // ultimaCita: DateTime.parse(json["ultimaCita"] ?? DateTime.now()),
+      codPaciente: json["codPaciente"]);
 
   Map<String, dynamic> toJson() => {
         "nombre": nombre,
@@ -68,6 +69,6 @@ class Paciente {
         "cod_persona": codPersona,
         "descripcion": descripcion,
         "totalCitas": totalCitas,
-        "ultimaCita": ultimaCita.toIso8601String(),
+        "ultimaCita": ultimaCita?.toIso8601String(),
       };
 }

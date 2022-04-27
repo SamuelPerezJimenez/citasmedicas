@@ -12,6 +12,8 @@ import '../providers/sidemenu_provider.dart';
 
 class DashboardHandlers {
   static Handler dashboard = Handler(handlerFunc: (context, params) {
+    Provider.of<SideMenuProvider>(context!, listen: false)
+        .setCurrentPageUrl(Flurorouter.dashboardRoute);
     return Dashboard(
       child: Principal(),
     );
