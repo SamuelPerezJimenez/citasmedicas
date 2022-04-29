@@ -1,7 +1,10 @@
+import 'package:citas_medicas_app/providers/principal_provider.dart';
 import 'package:citas_medicas_app/widgets/incomingAppointments.dart';
 import 'package:citas_medicas_app/widgets/patientIncomingHistory.dart';
 import 'package:date_utils/date_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../providers/web_service.dart';
@@ -20,8 +23,12 @@ class Principal extends StatefulWidget {
 }
 
 class _PrincipalState extends State<Principal> {
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
   @override
   Widget build(BuildContext context) {
+    final date = Provider.of<PrincipalProvider>(context, listen: true);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -32,6 +39,7 @@ class _PrincipalState extends State<Principal> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const MainStats(),
+                  // Text(date.update.toString()),
                   Container(
                     height: MediaQuery.of(context).size.height * 0.40,
                     padding: const EdgeInsets.all(16.0),
@@ -80,20 +88,57 @@ class _PrincipalState extends State<Principal> {
           ],
         ),
       ),
-      floatingActionButton: CustomOutlinedButton(
-        onPressed: () async {
-          // var result = await WebService().getDisponibilidad(id: '2');
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          GestureDetector(
+            onTap: () {
+              _showNotificationWithSubtitle();
+            },
+            child: Container(
+              height: 20,
+              width: 20,
+              color: Colors.grey.shade100,
+            ),
+          ),
+          CustomOutlinedButton(
+            onPressed: () async {
+              // var result = await WebService().getDisponibilidad(id: '2');
 
-          // var r = Utils().getJustAvailables(result);
+              // var r = Utils().getJustAvailables(result);
 
-          await AppointmentDialog().showAppoinmentDialog(context);
-        },
-        text: 'Nueva Cita',
-        isFilled: true,
-        isTextWhite: true,
-        color: const Color(0xff0D68A8),
+              await AppointmentDialog()
+                  .showAppoinmentDialog(context)
+                  .then((value) {});
+            },
+            text: 'Nueva Cita',
+            isFilled: true,
+            isTextWhite: true,
+            color: const Color(0xff0D68A8),
+          ),
+        ],
       ),
     );
+  }
+
+  Future<void> _showNotificationWithSubtitle() async {
+    const IOSNotificationDetails iOSPlatformChannelSpecifics =
+        IOSNotificationDetails(subtitle: 'the subtitle');
+    const MacOSNotificationDetails macOSPlatformChannelSpecifics =
+        MacOSNotificationDetails(
+      subtitle: 'the subtitle',
+      presentBadge: true,
+      presentAlert: true,
+      presentSound: true,
+    );
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(macOS: macOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        0,
+        'Informacion',
+        'Hay una cita proxima, comuniquese con el paciente para confirmar',
+        platformChannelSpecifics,
+        payload: 'item x');
   }
 }
 

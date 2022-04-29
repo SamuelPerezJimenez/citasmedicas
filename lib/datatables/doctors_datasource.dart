@@ -23,14 +23,14 @@ class DoctorsDataSource extends DataTableSource {
             borderRadius: BorderRadius.circular(10)),
         child: Text(doctor.ubicacionConsultorio),
       )),
-      DataCell(Center(
-          child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        decoration: BoxDecoration(
-            color: const Color(0xffC1E6FF),
-            borderRadius: BorderRadius.circular(10)),
-        child: const Text('Ver disponibilidad'),
-      ))),
+      // DataCell(Center(
+      //     child: Container(
+      //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      //   decoration: BoxDecoration(
+      //       color: const Color(0xffC1E6FF),
+      //       borderRadius: BorderRadius.circular(10)),
+      //   child: const Text('Ver disponibilidad'),
+      // ))),
       DataCell(IconButton(
           icon: const Icon(Icons.edit_outlined),
           onPressed: () {

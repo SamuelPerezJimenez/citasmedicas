@@ -19,7 +19,7 @@ class PatientsDataSource extends DataTableSource {
       DataCell(Text(paciente.codPersona.toString())),
       DataCell(Text(paciente.descripcion)),
       DataCell(Text(paciente.totalCitas.toString())),
-      DataCell(Text(paciente.ultimaCita.toString())),
+      // DataCell(Text(paciente.ultimaCita.toString())),
       DataCell(IconButton(
           icon: const Icon(Icons.edit_outlined),
           onPressed: () {

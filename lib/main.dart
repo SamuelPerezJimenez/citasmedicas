@@ -1,5 +1,6 @@
 import 'package:citas_medicas_app/pages/dashboard.dart';
 import 'package:citas_medicas_app/pages/principal.dart';
+import 'package:citas_medicas_app/providers/principal_provider.dart';
 import 'package:citas_medicas_app/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(lazy: false, create: (_) => PrincipalProvider()),
         ChangeNotifierProvider(lazy: false, create: (_) => SideMenuProvider()),
       ],
       child: MyApp(),

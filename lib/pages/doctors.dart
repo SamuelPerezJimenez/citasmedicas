@@ -122,7 +122,7 @@ class _DoctorsState extends State<Doctors> {
           ),
           FutureBuilder(
             future: WebService()
-                .getDoctors(idDoctor: query, speciality: speciality ?? 0),
+                .getDoctors(name: query, speciality: speciality ?? 0),
             builder:
                 (BuildContext context, AsyncSnapshot<List<Doctor>> snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
@@ -134,7 +134,7 @@ class _DoctorsState extends State<Doctors> {
                   return PaginatedDataTable(
                     // sortAscending: usersProvider.ascending,
                     // sortColumnIndex: usersProvider.sortColumnIndex,
-                    columnSpacing: constraints.maxWidth * 0.09,
+                    columnSpacing: constraints.maxWidth * 0.13,
                     columns: [
                       const DataColumn(label: Text('Nombre')),
                       DataColumn(
@@ -151,11 +151,11 @@ class _DoctorsState extends State<Doctors> {
                           }),
                       const DataColumn(label: Text('Especialidad')),
                       const DataColumn(label: Text('Consultorio')),
-                      const DataColumn(
-                          label: Text(
-                        'Disponibilidad',
-                        textAlign: TextAlign.center,
-                      )),
+                      // const DataColumn(
+                      //     label: Text(
+                      //   'Disponibilidad',
+                      //   textAlign: TextAlign.center,
+                      // )),
                       const DataColumn(label: Text('Acciones')),
                     ],
                     source: DoctorsDataSource(snapshot.data!

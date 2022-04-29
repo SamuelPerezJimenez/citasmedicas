@@ -5,6 +5,7 @@ import 'package:date_utils/date_utils.dart' as dateutil;
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:textfield_search/textfield_search.dart';
 
@@ -13,6 +14,7 @@ import '../models/disponibilidad_model.dart';
 import '../models/appointment_model.dart' as Citas;
 import '../models/patients.dart';
 import '../models/specialities.dart';
+import '../providers/principal_provider.dart';
 import '../providers/web_service.dart';
 import 'buttons/custom_outlined_button.dart';
 import 'k_inputs.dart';
@@ -20,7 +22,7 @@ import 'k_inputs.dart';
 final DateFormat formatGlobal = DateFormat('dd-MM-yyyy HH:mm');
 
 class AppointmentDialog {
-  showAppoinmentDialog(BuildContext context) {
+  Future<void> showAppoinmentDialog(BuildContext context) async {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -376,6 +378,9 @@ class _AppointmentDialogWidgetState extends State<AppointmentDialogWidget> {
               'Cita agendada con ${citas.codDoctor} de fecha y hora:  ${formatGlobal.format(citas.fecha)}',
               'Cita agendada',
             );
+            var principalProvider =
+                Provider.of<PrincipalProvider>(context, listen: false);
+            principalProvider.update = DateTime.now();
           },
           text: 'CREAR',
           isFilled: true,

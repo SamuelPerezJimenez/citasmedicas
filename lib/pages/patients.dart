@@ -3,9 +3,11 @@ import 'package:citas_medicas_app/datatables/patines_datasoource.dart';
 import 'package:citas_medicas_app/providers/web_service.dart';
 import 'package:citas_medicas_app/widgets/buttons/custom_outlined_button.dart';
 import 'package:citas_medicas_app/widgets/k_inputs.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../models/ars.dart';
 import '../models/doctors.dart';
 import '../models/patients.dart';
 import '../models/specialities.dart';
@@ -19,7 +21,7 @@ class Patients extends StatefulWidget {
 
 class _PatientsState extends State<Patients> {
   String query = '';
-  dynamic speciality = 0;
+  dynamic ars = '';
 
   @override
   Widget build(BuildContext context) {
@@ -63,42 +65,31 @@ class _PatientsState extends State<Patients> {
                   child: Container(
                     padding: const EdgeInsets.all(12.0),
                     child: FutureBuilder(
-                      future: WebService().getSpecialities(),
+                      future: WebService().getArs(),
                       builder: (BuildContext context,
-                          AsyncSnapshot<List<Especialidad>> snapshot) {
+                          AsyncSnapshot<List<Ar>> snapshot) {
                         if (snapshot.connectionState != ConnectionState.done) {
-                          return CircularProgressIndicator();
-                          // return DropdownButtonFormField(
-                          //     decoration: KInputs.formInputDecoration(
-                          //       hint: '',
-                          //       label: 'Cargando...',
-                          //     ),
-                          //     items: const [
-                          //       DropdownMenuItem(
-                          //         child: Text(''),
-                          //         value: 0,
-                          //       )
-                          //     ],
-                          //     onChanged: (value) {});
+                          return Container();
                         }
 
-                        return DropdownButtonFormField(
-                          items: List.generate(
-                              snapshot.data!.length,
-                              (index) => DropdownMenuItem(
-                                    child:
-                                        Text(snapshot.data![index].descripcion),
-                                    value: snapshot.data?[index].cod ?? 0,
-                                  )),
-                          onChanged: (value) {
-                            setState(() {
-                              speciality = value;
-                            });
-                          },
-                          value: speciality,
-                          decoration: KInputs.formInputDecoration(
-                            hint: '',
-                            label: 'Especialidad',
+                        return Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: DropdownSearch<String>(
+                            mode: Mode.MENU,
+                            showSelectedItems: true,
+                            items: snapshot.data!
+                                .map((e) => '${e.cod}-${e.descripcion}')
+                                .toList(),
+                            dropdownSearchDecoration:
+                                KInputs.formInputDecoration(
+                                    hint: '', label: 'ARS', icon: Icons.search),
+                            showSearchBox: true,
+                            selectedItem: ars,
+                            onChanged: (value) {
+                              setState(() {
+                                ars = value!;
+                              });
+                            },
                           ),
                         );
                       },
@@ -111,7 +102,7 @@ class _PatientsState extends State<Patients> {
                   child: CustomOutlinedButton(
                     onPressed: () async {
                       await WebService()
-                          .getPatients(idPaciente: query, idArs: speciality);
+                          .getPatients(idPaciente: query, idArs: ars);
                     },
                     text: 'Nuevo Paciente',
                     isFilled: true,
@@ -123,8 +114,9 @@ class _PatientsState extends State<Patients> {
             ),
           ),
           FutureBuilder(
-            future:
-                WebService().getPatients(idPaciente: query, idArs: speciality),
+            future: WebService().getPatients(
+                idPaciente: query,
+                idArs: ars != '' ? int.parse(ars.split('-')[0]) : 0),
             builder:
                 (BuildContext context, AsyncSnapshot<List<Paciente>> snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
@@ -136,7 +128,7 @@ class _PatientsState extends State<Patients> {
                   return PaginatedDataTable(
                     // sortAscending: usersProvider.ascending,
                     // sortColumnIndex: usersProvider.sortColumnIndex,
-                    columnSpacing: constraints.maxWidth * 0.09,
+                    columnSpacing: constraints.maxWidth * 0.13,
                     columns: [
                       const DataColumn(label: Text('Nombre')),
                       DataColumn(
@@ -153,11 +145,11 @@ class _PatientsState extends State<Patients> {
                           }),
                       const DataColumn(label: Text('ARS')),
                       const DataColumn(label: Text('Total Citas')),
-                      const DataColumn(
-                          label: Text(
-                        'Última cita',
-                        textAlign: TextAlign.center,
-                      )),
+                      // const DataColumn(
+                      //     label: Text(
+                      //   'Última cita',
+                      //   textAlign: TextAlign.center,
+                      // )),
                       const DataColumn(label: Text('Acciones')),
                     ],
                     source: PatientsDataSource(snapshot.data!

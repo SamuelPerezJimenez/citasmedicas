@@ -1,4 +1,5 @@
 import 'package:citas_medicas_app/models/appointment_model.dart';
+import 'package:citas_medicas_app/utils.dart';
 import 'package:flutter/material.dart';
 
 class AppointmentsDataSource extends DataTableSource {
@@ -14,7 +15,7 @@ class AppointmentsDataSource extends DataTableSource {
       DataCell((Text(appointment.nombre + ' ' + appointment.apellido))),
       DataCell(Text(appointment.telefono)),
       DataCell(Text(appointment.cedula.toString())),
-      DataCell(Text(appointment.fecha.toString())),
+      DataCell(Text(Utils().formatGlobal.format(appointment.fecha))),
       DataCell(
           Text(appointment.nombreDoctor + ' ' + appointment.apellidoDoctor)),
       DataCell(Container(

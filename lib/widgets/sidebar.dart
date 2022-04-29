@@ -45,7 +45,7 @@ class SideBar extends StatelessWidget {
                   sideMenuProvider.currentPage == Flurorouter.appointmentRoute),
           MenuItem(
               text: 'Pacientes',
-              icon: Icons.show_chart_outlined,
+              icon: Icons.person_search_outlined,
               isActive:
                   sideMenuProvider.currentPage == Flurorouter.patientsRoute,
               onPressed: () => navigateTo(Flurorouter.patientsRoute)),
@@ -55,8 +55,8 @@ class SideBar extends StatelessWidget {
             onPressed: () => navigateTo(Flurorouter.doctorsRoute),
             isActive: sideMenuProvider.currentPage == Flurorouter.doctorsRoute,
           ),
-          MenuItem(
-              text: 'Configuración', icon: Icons.settings, onPressed: () {}),
+          // MenuItem(
+          //     text: 'Configuración', icon: Icons.settings, onPressed: () {}),
           const SizedBox(height: 30),
           // const TextSeparator(text: 'UI Elements'),
           // MenuItem(

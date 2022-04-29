@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:date_utils/date_utils.dart' as dateutil;
 import 'package:intl/intl.dart';
 
+import '../models/appointment_model.dart';
+import '../providers/web_service.dart';
+
 class AppontmentsPerDay extends StatefulWidget {
   const AppontmentsPerDay({Key? key}) : super(key: key);
 
@@ -41,20 +44,41 @@ class _AppontmentsPerDayState extends State<AppontmentsPerDay> {
             ),
             const SizedBox(height: 14),
             Expanded(
-                child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: fechas.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  margin: const EdgeInsets.only(right: 20),
-                  child: AppointmentPerDayItem(
-                      count: 0,
-                      dateTime: fechas[index],
-                      selected: (dateutil.DateUtils.isSameDay(
-                          fechas[index], DateTime.now()))),
-                );
-              },
-            )),
+              child: FutureBuilder(
+                future: WebService().getAppointments(
+                    idAppointment: '',
+                    idAppointmentStatus: 0,
+                    idAppointmentType: 0,
+                    date: ''),
+                builder:
+                    (BuildContext context, AsyncSnapshot<List<Cita>> snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return const CircularProgressIndicator();
+                  }
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: fechas.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var count = snapshot.data!
+                          .where((element) => dateutil.DateUtils.isSameDay(
+                              element.fecha, fechas[index]))
+                          .toList()
+                          .length;
+                      return Container(
+                        margin: const EdgeInsets.only(right: 20),
+                        child: AppointmentPerDayItem(
+                            //snapshot.data![0].fecha count when date matchs
+
+                            count: count,
+                            dateTime: fechas[index],
+                            selected: (dateutil.DateUtils.isSameDay(
+                                fechas[index], DateTime.now()))),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
           ],
         ));
   }
